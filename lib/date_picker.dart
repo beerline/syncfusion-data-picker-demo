@@ -14,12 +14,16 @@ class _DatePickerState extends State<DatePicker> {
     final theme = Theme.of(context);
     return SfDateRangePicker(
       controller: _controller,
+      selectionColor: Colors.transparent,
+      toggleDaySelection: true,
+      allowViewNavigation: false,
+      selectionMode: DateRangePickerSelectionMode.multiple,
       cellBuilder: (BuildContext context, DateRangePickerCellDetails details) {
         final now = DateTime.now();
         final currentDate = DateTime(now.year, now.month, now.day);
         final isToday = details.date == currentDate;
         final isPastDay = details.date.isBefore(currentDate);
-        final isSelected = _controller.selectedDate == details.date;
+        final isSelected = _controller.selectedDates?.contains(details.date) ?? false;
 
         return Container(
           margin: EdgeInsets.all(2),
@@ -58,7 +62,6 @@ class _DatePickerState extends State<DatePicker> {
           }),
         );
       },
-    selectionShape: DateRangePickerSelectionShape.rectangle,
       monthViewSettings: DateRangePickerMonthViewSettings(
         firstDayOfWeek: 1,
         dayFormat: 'EEE',
